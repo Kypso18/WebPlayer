@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify MP3 Player</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Spotify MP3 Player</h1>
+    <div class="player">
+      <div class="album-cover">
+        <img src="#" alt="Album Cover">
+      </div>
+      <div class="track-info">
+        <p class="track-name">Track Name</p>
+        <p class="artist-name">Artist Name</p>
+      </div>
+      <div class="progress-bar">
+        <input type="range" id="progressSlider" min="0" value="0">
+      </div>
+      <div class="controls">
+        <button id="prevBtn">&#9664;</button>
+        <button id="playPauseBtn">&#9658;</button>
+        <button id="nextBtn">&#9658;</button>
+      </div>
+      <div class="playlist">
+        <h2>Playlist</h2>
+        <ul id="playlistItems"></ul>
+      </div>
+      
+      <div class="related-artists">
+        <h2>Related Artists</h2>
+        <ul id="relatedArtistsList"></ul>
+      </div>
+      
+      <div class="recommended-songs">
+        <h2>Recommended Songs</h2>
+        <ul id="recommendedSongsList"></ul>
+      </div>
+    </div>
+    
+      
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
