@@ -1,52 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spotify MP3 Player</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <div class="container">
-    <h1>Spotify MP3 Player</h1>
-    <div class="player">
-      <div class="album-cover">
-        <img src="#" alt="Album Cover">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skipp's MP3 Player</title>
+    <link rel="icon" href="./assets/favicon/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main id="main">
+      <div class="container">
+        <section id="card-container">
+          <section id="image-container">
+            <div id="image-spacer"></div>
+            <div id="image"></div>
+          </section>
+          <section id="name">
+            <div id="title">Song Name</div>
+            <div id="artist">Artist</div>
+          </section>
+          <section class="music-seeker">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              id="seeker"
+              class="music-seeker-bar"
+            />
+            <span id="currentTime" class="time-display">0:00</span>
+            <span id="maxDuration" class="time-display">0:00</span>
+          </section>
+          <section id="controls">
+            <button id="btn-prev" class="btn"></button>
+            <button id="btn-play" class="btn"></button>
+            <button id="btn-next" class="btn"></button>
+          </section>
+        </section>
+        <section id="explore-sec">
+          <section>
+            <div id="explore-title">
+              <h1>Explore</h1>
+            </div>
+            <div id="explore-tabs">
+              <ul id="explore-tab-list">
+                <li id="lyrics" class="tab-list-item">
+                  <button onclick="showTabContent('lyrics')">Lyrics</button>
+                </li>
+                <li id="other-albums" class="tab-list-item">
+                  <button onclick="showTabContent('otherAlbums')">
+                    Other Albums
+                  </button>
+                </li>
+                <li id="related-artists" class="tab-list-item">
+                  <button onclick="showTabContent('relatedArtists')">
+                    Related Artists
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div id="explore-tab-content"></div>
+          </section>
+        </section>
       </div>
-      <div class="track-info">
-        <p class="track-name">Track Name</p>
-        <p class="artist-name">Artist Name</p>
-      </div>
-      <div class="progress-bar">
-        <input type="range" id="progressSlider" min="0" value="0">
-      </div>
-      <div class="controls">
-        <button id="prevBtn">&#9664;</button>
-        <button id="playPauseBtn">&#9658;</button>
-        <button id="nextBtn">&#9658;</button>
-      </div>
-      <div class="playlist">
-        <h2>Playlist</h2>
-        <ul id="playlistItems"></ul>
-      </div>
-      
-      <div class="related-artists">
-        <h2>Related Artists</h2>
-        <ul id="relatedArtistsList"></ul>
-      </div>
-      
-      <div class="recommended-songs">
-        <h2>Recommended Songs</h2>
-        <ul id="recommendedSongsList"></ul>
-      </div>
+    </main>
+    <div class="modal">
+      <div class="modal-content"></div>
     </div>
-    
-      
-  </div>
 
-  <script src="script.js"></script>
-</body>
-
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+      integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="script.js"></script>
+  </body>
 </html>

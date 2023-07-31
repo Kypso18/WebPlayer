@@ -1,177 +1,200 @@
-const CLIENT_ID = 'YOUR_SPOTIFY_CLIENT_ID';
-const REDIRECT_URI = 'http://localhost:3000/callback';
-const SCOPES = ['user-read-playback-state', 'user-modify-playback-state'];
+const musicPlayer = {
+  seekerBar: document.getElementById("seeker"),
+  currentTimeSpan: document.getElementById("currentTime"),
+  maxDurationSpan: document.getElementById("maxDuration"),
 
-const player = document.getElementById('playPauseBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const trackNameElement = document.querySelector('.track-name');
-const artistNameElement = document.querySelector('.artist-name');
-const albumCoverElement = document.querySelector('.album-cover img');
+  formatTime: function (seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  },
 
-// Check if the user is logged in
-function checkLoginStatus() {
-  const accessToken = getAccessToken();
-  return accessToken !== null;
-}
+  setSeekerValue: function (value) {
+    this.seekerBar.value = value;
+    this.currentTimeSpan.textContent = this.formatTime(value);
+  },
 
-// Get the access token from the URL
-function getAccessToken() {
-  const params = new URLSearchParams(window.location.hash.substr(1));
-  return params.get('access_token');
-}
+  init: function () {
+    this.maxDurationSpan.textContent = "0:00";
 
-// Authenticate with Spotify API
-function authenticateWithSpotify() {
-  window.location.href = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES.join(' '))}`;
-}
-
-// Fetch track details from Spotify API
-function fetchTrackDetails(accessToken) {
-  // Replace this with actual track details from the Spotify API
-  const trackDetails = {
-    name: 'Sample Track',
-    artist: 'Sample Artist',
-    albumCoverUrl: 'https://via.placeholder.com/200', // Replace with the album cover URL
-  };
-
-  return Promise.resolve(trackDetails);
-}
-
-// Update the UI with the current track details
-function updatePlayerUI(track) {
-  trackNameElement.textContent = track.name;
-  artistNameElement.textContent = track.artist;
-  albumCoverElement.src = track.albumCoverUrl;
-}
-
-// Event listeners for play, pause, prev, next buttons
-player.addEventListener('click', () => {
-  const accessToken = getAccessToken();
-  if (accessToken) {
-    // Add code to play or pause the track
-  } else {
-    authenticateWithSpotify();
-  }
-});
-
-prevBtn.addEventListener('click', () => {
-  const accessToken = getAccessToken();
-  if (accessToken) {
-    // Add code to play the previous track
-  } else {
-    authenticateWithSpotify();
-  }
-});
-
-nextBtn.addEventListener('click', () => {
-  const accessToken = getAccessToken();
-  if (accessToken) {
-    // Add code to play the next track
-  } else {
-    authenticateWithSpotify();
-  }
-});
-
-// Initial setup
-window.addEventListener('load', () => {
-  const accessToken = getAccessToken();
-  if (accessToken) {
-    // Fetch and display the initial track details
-    fetchTrackDetails(accessToken)
-      .then(updatePlayerUI)
-      .catch(console.error);
-  }
-});
-// ... (Previous JavaScript code) ...
-
-// Fetch user's playlists
-function fetchPlaylists(accessToken) {
-    // Replace this with actual playlist data from the Spotify API
-    const playlists = [
-      { id: 'playlist1', name: 'Playlist 1' },
-      { id: 'playlist2', name: 'Playlist 2' },
-      // Add more playlists as needed
-    ];
-  
-    return Promise.resolve(playlists);
-  }
-  
-  // Display playlists in the UI
-  function displayPlaylists(playlists) {
-    const playlistItems = document.getElementById('playlistItems');
-    playlistItems.innerHTML = playlists.map(playlist => `<li>${playlist.name}</li>`).join('');
-  }
-  
-  // Fetch related artists
-  function fetchRelatedArtists(accessToken) {
-    // Replace this with actual related artists data from the Spotify API
-    const relatedArtists = [
-      { id: 'artist1', name: 'Artist 1' },
-      { id: 'artist2', name: 'Artist 2' },
-      // Add more related artists as needed
-    ];
-  
-    return Promise.resolve(relatedArtists);
-  }
-  
-  // Display related artists in the UI
-  function displayRelatedArtists(artists) {
-    const relatedArtistsList = document.getElementById('relatedArtistsList');
-    relatedArtistsList.innerHTML = artists.map(artist => `<li>${artist.name}</li>`).join('');
-  }
-  
-  // Fetch recommended songs
-  function fetchRecommendedSongs(accessToken) {
-    // Replace this with actual recommended songs data from the Spotify API
-    const recommendedSongs = [
-      { id: 'song1', name: 'Recommended Song 1' },
-      { id: 'song2', name: 'Recommended Song 2' },
-      // Add more recommended songs as needed
-    ];
-  
-    return Promise.resolve(recommendedSongs);
-  }
-  
-  // Display recommended songs in the UI
-  function displayRecommendedSongs(songs) {
-    const recommendedSongsList = document.getElementById('recommendedSongsList');
-    recommendedSongsList.innerHTML = songs.map(song => `<li>${song.name}</li>`).join('');
-  }
-  
-  // Update the music progress bar
-  function updateProgressBar(accessToken) {
-    const progressSlider = document.getElementById('progressSlider');
-    // Add event listener to seek to a specific time when the user clicks on the progress bar
-    progressSlider.addEventListener('input', () => {
-      // Add code to seek to the specified time in the song
+    this.seekerBar.addEventListener("input", () => {
+      const value = parseInt(this.seekerBar.value);
+      this.currentTimeSpan.textContent = this.formatTime(value);
+      this.seekerBar.style.background = `linear-gradient(to right, #74EAD8 ${value}%, white ${value}%) no-repeat`;
     });
+  },
+};
+
+musicPlayer.init();
+
+// Tab Content
+const tabContent = {
+  lyrics: "",
+  otherAlbums: "",
+  relatedArtists: "",
+};
+
+// Show Respective Tab Content in explore-tab-content Element on DOM
+function showTabContent(tab) {
+  const exploreTabContent = document.getElementById("explore-tab-content");
+  exploreTabContent.innerHTML = tabContent[tab];
+}
+
+const API_KEY = "4a864cdc0bmshd2d52f52a4a4b22p171c4ejsnb2bad9112e47";
+const searchQuery = "Selena Gomez";
+
+const geniusOptions = {
+  method: "GET",
+  url: "https://genius-song-lyrics1.p.rapidapi.com/search/",
+  params: {
+    q: searchQuery,
+    per_page: "6",
+    page: "1",
+  },
+  headers: {
+    "X-RapidAPI-Key": API_KEY,
+    "X-RapidAPI-Host": "genius-song-lyrics1.p.rapidapi.com",
+  },
+};
+
+const spotifyOptions = {
+  method: "GET",
+  url: "https://spotify23.p.rapidapi.com/search/",
+  params: {
+    q: searchQuery,
+    type: "multi",
+    per_page: "6",
+    page: "1",
+  },
+  headers: {
+    "X-RapidAPI-Key": API_KEY,
+    "X-RapidAPI-Host": "spotify23.p.rapidapi.com",
+  },
+};
+
+const imageElement = document.getElementById("image");
+
+const fetchData = async () => {
+  try {
+    // Fetch data from Genius API
+    const geniusResponse = await axios.request(geniusOptions);
+    console.log("Genius API response:", geniusResponse.data);
+
+    // Get the ID of the first song in the search results
+    const songId = geniusResponse.data.hits[0].result.id;
+
+    // Fetch the lyrics of the song using its ID
+    const lyricsResponse = await axios.get(
+      `https://genius-song-lyrics1.p.rapidapi.com/song/lyrics/?id=${songId}`,
+      {
+        headers: {
+          "X-RapidAPI-Key": API_KEY,
+          "X-RapidAPI-Host": "genius-song-lyrics1.p.rapidapi.com",
+        },
+      }
+    );
+    console.log("Genius Lyrics API response:", lyricsResponse.data);
+
+    // Fetch data from Spotify API
+    const spotifyResponse = await axios.request(spotifyOptions);
+    console.log("Spotify API response:", spotifyResponse.data.albums.items[0]);
+
+    // Update the DOM with the fetched data
+    const titleElement = document.getElementById("title");
+    titleElement.textContent = geniusResponse.data.hits[0].result.title;
+
+    const artistElement = document.getElementById("artist");
+    artistElement.textContent =
+      geniusResponse.data.hits[0].result.primary_artist.name;
+
+    tabContent.lyrics =
+      `<div class="lyrics">` +
+      (lyricsResponse.data.lyrics.lyrics.body.html ||
+        "<p>No lyrics found</p>") +
+      `</div>`;
+
+    imageElement.style.backgroundImage = `url(${spotifyResponse.data.albums.items[0].data.coverArt.sources[0].url})`;
+    imageElement.style.boxShadow = "inset 0 0 0 #00000000";
+
+    tabContent.otherAlbums = spotifyResponse.data.albums.items
+      .map(
+        (album, index) =>
+          `<div class="other-albums-container" style="z-index: ${
+            50 - index
+          }" onclick="showModal('${album.data.name}', '${
+            album.data.artist
+          }')"><div class="relative"><img src="${
+            album.data.coverArt.sources[0].url
+          }" alt="${album.data.name}"><p class="absolute">${
+            album.data.name
+          }</p></div></div>`
+      )
+      .join("");
+
+    tabContent.relatedArtists = spotifyResponse.data.artists.items
+      .map(
+        (artist, index) =>
+          `<div class="related-artists-container" style="z-index: ${
+            50 - index
+          }"><div class="relative"><img src="${
+            artist.data.visuals.avatarImage.sources[2].url
+          }" alt="${artist.data.profile.name}"><p>${
+            artist.data.profile.name
+          }</p></div></div>`
+      )
+      .join("");
+
+    // Automatically display the Lyrics tab when the page loads
+    showTabContent("lyrics");
+  } catch (error) {
+    console.error(error);
   }
-  
-  // Initial setup
-  window.addEventListener('load', () => {
-    const accessToken = getAccessToken();
-    if (accessToken) {
-      // Fetch and display the initial track details
-      fetchTrackDetails(accessToken)
-        .then(updatePlayerUI)
-        .catch(console.error);
-  
-      // Fetch and display playlists, related artists, and recommended songs
-      fetchPlaylists(accessToken)
-        .then(displayPlaylists)
-        .catch(console.error);
-  
-      fetchRelatedArtists(accessToken)
-        .then(displayRelatedArtists)
-        .catch(console.error);
-  
-      fetchRecommendedSongs(accessToken)
-        .then(displayRecommendedSongs)
-        .catch(console.error);
-  
-      // Update the music progress bar
-      updateProgressBar(accessToken);
-    }
+};
+
+fetchData();
+
+// Modal functionality
+const modal = document.querySelector(".modal");
+const modalContent = document.querySelector(".modal-content");
+
+function showModal(title, artist) {
+  modalContent.innerHTML = `
+      <img src="${imageElement.style.backgroundImage
+        .slice(4, -1)
+        .replace(/"/g, "")}" alt="${title}">
+      <h2>${title}</h2>
+      <h3>${artist}</h3>
+      <button class="spotify" onclick="redirectToSpotify()">Open in Spotify</button>
+      <button class="play" onclick="playMusic()">Play on Website</button>
+    `;
+
+  modal.style.display = "flex";
+}
+
+function hideModal() {
+  modal.style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  imageElement.addEventListener("click", () => {
+    const title = document.getElementById("title").textContent;
+    const artist = document.getElementById("artist").textContent;
+    showModal(title, artist);
   });
-  
+
+  window.onclick = function (event) {
+    if (event.target === modal) {
+      hideModal();
+    }
+  };
+});
+
+function redirectToSpotify() {
+  // Implement redirection to Spotify here
+  window.alert("Redirecting to Spotify website...");
+}
+
+function playMusic() {
+  // Implement the music playback on the website here
+  window.alert("Playing the music on the current website...");
+}

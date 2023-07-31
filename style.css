@@ -1,53 +1,465 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&family=Rubik:wght@300;400;500&display=swap');
+
+/* Reset styles for all elements */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Global styles for the body */
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f0f0f0;
-  }
-  
+  margin: 0;
+  font-family:"Quicksand", "Agdasima", "Noto Sans JP", "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: larger;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove underlines from anchor tags */
+a {
+  text-decoration: none;
+}
+
+/* Center the container and set maximum widths based on breakpoints */
+.container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Media queries for responsive container width */
+@media (min-width: 640px) {
   .container {
-    padding: 20px;
+    max-width: 640px;
   }
-  
-  .player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
   }
-  
-  .album-cover {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 20px;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
   }
-  
-  .album-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
   }
-  
-  .controls button {
-    font-size: 24px;
-    padding: 10px 20px;
-    margin: 0 10px;
-    background-color: #1db954;
-    color: #ffffff;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
   }
+}
+
+/* Styles for the main section */
+#main {
+  display: flex;
+  background: url(./assets/bg-minnt.jpg) no-repeat center center/cover;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  transition: all 1s ease-in-out;
+}
+
+/* Styles for the card container */
+#card-container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.7);
+  width: 25rem;
+  height: 36rem;
+  border-radius: 1rem;
+  border: #000 1px solid;
+  padding: 1.25rem;
+  animation: card-animation 0.75s ease-in-out;
+  backdrop-filter: blur(12px);
+}
+
+/* Styles for the image container */
+#image-container {
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  padding: 1rem 0;
+  height: auto;
+}
+
+/* Spacer for image positioning */
+#image-spacer {
+  height: 10rem;
+}
+
+/* Styles for the main image */
+#image {
+
+  position: center;
+  left: 4rem;
+  border-radius: 0.75rem;
+  background-color: rgb(50, 50, 50);
+  width: 10rem;
+  height: 10rem;
+  z-index: 10;
+  box-shadow: inset 0 0 100px #000;
+}
+
+
+
+/* Styles for the name section */
+#name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  width: 100%;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Styles for the title */
+#title {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  color: #000;
+}
+
+/* Styles for the artist */
+#artist {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: #000;
   
-  .track-info {
-    margin-bottom: 10px;
+
+}
+
+/* Styles for the music seeker section */
+.music-seeker {
+  position: relative;
+  width: 100%;
+  margin: 2.5rem auto;
+  display: flex;
+  align-items: center;
+  color: #74EAD8;
+}
+
+/* Styles for the music seeker bar */
+.music-seeker-bar {
+  width: 100%;
+  border-radius: 0.5rem;
+  appearance: none;
+  height: 0.25rem;
+  color: white;
+  
+}
+
+/* Styles for the range input slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 4px solid black;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Styles for the range input slider thumb on hover */
+input[type="range"]::-webkit-slider-thumb:hover {
+  scale: 1.1;
+  transition: all 0.1s ease-in-out;
+}
+
+/* Styles for the time display */
+.time-display {
+  position: absolute;
+  color: #000;
+  font-size: 1.2rem;
+}
+
+/* Styles for the current time */
+#currentTime {
+  top: -30px;
+  left: 0;
+  color:  #000;
+}
+
+/* Styles for the maximum duration time */
+#maxDuration {
+  top: -30px;
+  right: 0;
+  color:  #000;
+}
+
+/* Styles for the music player controls */
+#controls {
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem 0;
+  height: 100px;
+  color:  #000;
+}
+
+/* Styles for the music player buttons */
+.btn {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-radius: 100%;
+  color:  #000;
+  
+}
+
+/* Styles for the music player buttons on hover */
+.btn:hover {
+  cursor: pointer;
+  scale: 1.15;
+  transition: all 0.15s ease-in-out;
+  color:  #000;
+}
+
+/* Styles for the previous button */
+#btn-prev {
+  background: url(./assets/previous-button.png) no-repeat center
+    center/contain;
+  width: 50px;
+  padding: 0.5rem 1rem;
+  border: none;
+ 
+}
+
+/* Styles for the play button */
+#btn-play {
+  background: url(/assets/play-button.png) no-repeat center
+    center/contain;
+  width: 100px;
+  padding: 0.5rem 1rem;
+  border: none;
+}
+
+/* Styles for the next button */
+#btn-next {
+  background: url(/assets/next-button.png) no-repeat center
+    center/contain;
+  width: 50px;
+  padding: 0.5rem 1rem;
+  border: none;
+}
+
+/* Styles for the explore section */
+#explore-sec {
+  display: flex;
+  flex-direction: column;
+  color: #000;
+  padding: 0 2.5rem;
+  font-size: 50px;
+  opacity: 80%;
+}
+
+/* Styles for the explore title */
+#explore-title {
+  animation: explore-animation 0.85s ease-in-out;
+}
+
+/* Styles for the explore tab list */
+#explore-tab-list {
+  display: flex;
+  list-style-type: none;
+  margin: 1rem 0;
+  animation: explore-animation 1.1s ease-in-out;
+}
+
+/* Styles for the explore tab list item buttons */
+.tab-list-item button {
+  color: #000;
+  background: none;
+  font-size: 2.5rem;
+  border: none;
+  margin: 0 2.5rem 0 0;
+  cursor: pointer;
+}
+
+/* Styles for explore content, paragraphs, and links */
+#explore-tab-content,
+p,
+a {
+  color: #000;
+  font-size: 1.5rem;
+  letter-spacing: 0.2rem;
+  max-height: 20rem;
+  max-width: 42rem;
+  text-decoration: none;
+}
+
+/* Styles for the explore tab content grid */
+#explore-tab-content {
+  display: flex;
+}
+
+/* Add scrollbar styles for the lyrics */
+.lyrics {
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.lyrics::-webkit-scrollbar {
+  display: none;
+}
+
+/* Add styles for album and artist containers */
+.other-albums-container,
+.related-artists-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+  transform: rotateY(60deg) skewY(10deg);
+  margin-top: 2rem;
+  margin-right: -145px;
+  object-fit: cover;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+/* Add hover effect for album and artist containers */
+.other-albums-container:hover,
+.related-artists-container:hover {
+  transform: translateY(-10px) translateX(100px) rotateX(10deg);
+  transition: all 0.3s ease-in-out;
+  margin: 5px 2px;
+  z-index: 100 !important;
+}
+
+.other-albums-container img,
+.related-artists-container img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Modal Styling */
+
+/* Styles for the modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+/* Styles for the modal content */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  backdrop-filter: blur(2px);
+}
+
+/* Styles for the modal image */
+.modal-content img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for the modal heading 1 */
+.modal-content h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Styles for the modal heading 3 */
+.modal-content h3 {
+  font-size: 1.4rem;
+  margin-top: 5px;
+}
+
+/* Styles for the modal buttons */
+.modal-content button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #1db954;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Styles for the Spotify button */
+.modal-content button.spotify {
+  background-color: #1db954;
+}
+
+/* Styles for the play button */
+.modal-content button.play {
+  background-color: #ff4d00;
+}
+
+/* Keyframes for the explore section animation */
+@keyframes explore-animation {
+  0% {
+    transform: translateY(-100vh);
   }
-  
-  h1 {
-    margin-bottom: 20px;
+  25% {
+    transform: translateY(-100vh);
   }
-  
+  50% {
+    transform: translateY(-100vh);
+  }
+  75% {
+    transform: translateY(1vh);
+  }
+  90% {
+    transform: translateY(-0.95vh);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Keyframes for the card animation */
+@keyframes card-animation {
+  0% {
+    transform: scale(0);
+  }
+  25% {
+    transform: scale(1.1) translateX(10vw);
+  }
+  50% {
+    transform: scale(0.98) translateX(10vw);
+  }
+  75% {
+    transform: scale(1) translateX(-1vw);
+  }
+  100% {
+    transform: translateX(0vw);
+  }
+}
